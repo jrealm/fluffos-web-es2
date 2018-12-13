@@ -50,6 +50,10 @@ logon()
 	set_temp("login_time", time());
 	last_age_set = time();
 	seteuid(0);
+	if (query_ip_port() == 4001) {
+	    set_encoding("UTF-8");
+	    return;
+	}
 	LOGIN_D->logon( this_object() );
 	return;
     }
@@ -194,4 +198,39 @@ restore()
     if( ! email ) email = ::query("email");
 
     return 1;
+}
+
+void process_input(string str) {
+    int i, hex, *data;
+    string header, name, value, key, ip;
+
+    foreach (header in explode(str, "\r\n")) {
+        if (sscanf(header, "%s:%s", name, value) == 2) {
+            switch (lower_case(trim(name))) {
+                case "sec-websocket-key":
+                    key = sha1(trim(value) + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11");
+                    data = allocate(20);
+
+                    for (i = 0; i < 40; i += 2) {
+                        sscanf(key[i..i + 1], "%x", hex);
+                        data[i / 2] = hex;
+                    }
+
+                    key = base64_encode(data);
+                    break;
+
+                case "x-forwarded-for":
+                    ip = trim(explode(value, ",")[0]);
+                    break;
+            }
+        }
+    }
+
+    if (key) {
+        write("HTTP/1.1 101 Switching Protocols\nUpgrade: WebSocket\nConnection: Upgrade\nSec-WebSocket-Accept: " + key + "\n\n");
+        websocket_handshake_done();
+        set_temp("websocket", ([ "ip" : ip ]));
+    }
+
+    LOGIN_D->logon(this_object());
 }
