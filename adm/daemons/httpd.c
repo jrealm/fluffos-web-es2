@@ -14,6 +14,8 @@
 
 #include <http.h>
 
+private void get_request(string req, object ob);
+
 private void create() { seteuid(getuid()); }
 
 void
@@ -24,7 +26,7 @@ logon(object ob)
     CHANNEL_D->do_channel(this_object(), "sys",
 	sprintf("Request from %s\n", query_ip_name(ob)), 0);
     write("request:");
-    input_to("get_request", ob);
+    input_to((: get_request :), ob);
 }
 
 private void

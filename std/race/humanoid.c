@@ -98,7 +98,7 @@ setup(object ob)
 
 // initialize()
 //
-// To initialize race-specific stuff of a character. 
+// To initialize race-specific stuff of a character.
 
 void initialize(object ob)
 {
@@ -220,10 +220,10 @@ int valid_wield(object me, object ob, string skill)
 	    return notify_fail("你正在使用需要雙手的武器。\n");
 	if( sk[0][0..9] !="secondhand" && skill[0..9]!="secondhand" )
 	    return notify_fail("使用兩把以上的武器必須為一主一副。\n");
-	if( me->query_temp("armor/shield") )    
+	if( me->query_temp("armor/shield") )
 	    return notify_fail("你的雙手都沒有空可以裝備這個武器。\n");
     }
-        
+
     return 1;
 }
 
@@ -332,15 +332,15 @@ statistic_exhausted(object ob, mapping flag)
     // Starving and thirsting
     if( flag["food"] ) {
 	map_delete( flag, "food" );
-	ob->consume_stat("kee", 1);
-	tell_object(ob,
-	    HIR "你已經餓得兩眼昏花，四肢無力了，最好找點東西來吃。\n" NOR);
+//	ob->consume_stat("kee", 1);
+//	tell_object(ob,
+//	    HIR "你已經餓得兩眼昏花，四肢無力了，最好找點東西來吃。\n" NOR);
     }
     if( flag["water"] ) {
 	map_delete( flag, "water" );
-	ob->consume_stat("kee", 1);
-	tell_object(ob,
-	    HIR "你覺得口乾舌燥，開始出現脫水的現象了，最好找點水喝。\n" NOR);
+//	ob->consume_stat("kee", 1);
+//	tell_object(ob,
+//	    HIR "你覺得口乾舌燥，開始出現脫水的現象了，最好找點水喝。\n" NOR);
     }
     if( flag["fatigue"] ) map_delete(flag, "fatigue");
 

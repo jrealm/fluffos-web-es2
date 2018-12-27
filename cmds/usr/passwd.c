@@ -16,6 +16,10 @@
 
 inherit F_CLEAN_UP;
 
+private void get_old_pass(string pass, object ob);
+private void get_new_pass(string pass, object ob);
+private void confirm_new_pass(string pass, object ob, string new_pass);
+
 int main(object me, string arg)
 {
     object ob;
@@ -33,10 +37,10 @@ int main(object me, string arg)
 
     if( stringp(ob->query("password")) ) {
         write("為了安全起見﹐請先輸入您原來的密碼﹕");
-        input_to("get_old_pass", 1, ob);
+        input_to((: get_old_pass :), 1, ob);
     } else {
         write("請輸入新密碼：");
-        input_to("get_new_pass", 1, ob);
+        input_to((: get_new_pass :), 1, ob);
     }
 
     return 1;
@@ -53,16 +57,16 @@ private void get_old_pass(string pass, object ob)
         return;
     }
     write("請輸入新密碼﹕");
-    input_to("get_new_pass", 1, ob );
+    input_to((: get_new_pass :), 1, ob );
 }
 
 private void get_new_pass(string pass, object ob)
 {
     write("\n請再輸入一次新密碼﹕");
 #ifdef	ENABLE_MD5_PASSWORD
-    input_to("confirm_new_pass", 1, ob, crypt(pass,sprintf("$1$%d", random(99999999))));
+    input_to((: confirm_new_pass :), 1, ob, crypt(pass,sprintf("$1$%d", random(99999999))));
 #else
-    input_to("confirm_new_pass", 1, ob, crypt(pass,0));
+    input_to((: confirm_new_pass :), 1, ob, crypt(pass,0));
 #endif
 }
 

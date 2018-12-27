@@ -32,7 +32,7 @@ connect(int port)
     switch(port)
     {
     case MUD_PORT:
-    case 4001:
+    case 5001:
 	err = catch(ob = new(LOGIN_OB));
 	if( err ) {
 	    write("使用者登入程式正在維修中，請稍候再來。\n");

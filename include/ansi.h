@@ -17,7 +17,7 @@
  
 #define ESC	"\x1B"
  
-#define NOR ESC "[0;2m"		/* Normal white forground */
+#define NOR ESC "[2;37;0m"	/* Normal white forground */
  
 /* Foreground colors */
  

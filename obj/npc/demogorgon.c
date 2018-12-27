@@ -4,6 +4,9 @@
 
 inherit NPC;
 
+private void countdown(int sec);
+private void do_shutdown();
+
 void create()
 {
         set_name( HIW "死神" NOR, ({ "demogorgon" }) );
@@ -39,7 +42,7 @@ void start_shutdown()
                         "\t\t想要命的，你們還有五分鐘可以趕快離開吧！！\n\n"
                         "\t\t不然的話，後果自行負責～～\n\n" NOR,
                 users() );
-        call_out("countdown", 240, 61);
+        call_out((: countdown :), 240, 61);
 }
 
 private void countdown(int sec)
@@ -51,21 +54,21 @@ private void countdown(int sec)
                 "\t\t你們還有" + chinese_number(sec) + "秒鐘可以離開。\n\n"
                     "\t\t不要命的你就試試看吧！！\n\n" NOR,
                         users() );
-                call_out("countdown", 49, 11);
+                call_out((: countdown :), 49, 11);
         }else if( sec > 0) {
                 message("system",
                         HIW "\n死神" HIR "冷酷低沉的聲音傳進你的耳內：\n\n"
                                 "\t\t你們還有" + chinese_number(sec) + "秒鐘的時間可以逃！！\n\n"
                                 "\t\t不想死的就趕快逃吧！！！\n\n" NOR,
                         users() );
-                call_out("countdown", 1, sec);
+                call_out((: countdown :), 1, sec);
         }
         else {
                 message("system",
                         HIW "\n死神" HIR "用憤怒的聲音咆哮道：\n\n"
                             "\t\t天啊～ 地啊～  神啊～ \n\n" NOR,
                         users() );
-                call_out("do_shutdown", 2);
+                call_out((: do_shutdown :), 2);
         }
 }
 

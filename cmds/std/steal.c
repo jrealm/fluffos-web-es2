@@ -5,6 +5,8 @@
 
 inherit F_CLEAN_UP;
 
+private void compelete_steal(object me, object victim, object ob, int sp, int dp);
+
 void create() {seteuid(getuid());}
 
 int main(object me, string arg)
@@ -121,7 +123,7 @@ int main(object me, string arg)
 
     me->set_temp("stealing", 1);
     me->delete_temp("pending/hidden");
-    call_out( "compelete_steal", 3, me, victim, ob, sp, dp);
+    call_out((: compelete_steal :), 3, me, victim, ob, sp, dp);
 
     return 1;
 }

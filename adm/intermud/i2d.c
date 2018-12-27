@@ -47,6 +47,7 @@ mapping mud_alias = ([]);
 // --------------------------------------------------------------------------
 
 void set_mud_alias(string alias, string name);
+private void startup();
 
 // --------------------------------------------------------------------------
 
@@ -69,7 +70,7 @@ create()
 	udp_port++;
 
     resolve( query_host_name(), "resolve_callback" );
-    call_out("startup", 1);
+    call_out((: startup :), 1);
 }
 
 #ifdef SAVE_MUDLIST
@@ -93,7 +94,7 @@ update()
 		m["PORTUDP"]
 	    );
 
-    call_out("update", MUDLIST_UPDATE_INTERVAL);
+    call_out((: update :), MUDLIST_UPDATE_INTERVAL);
 }
 
 private void

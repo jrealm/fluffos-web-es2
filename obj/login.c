@@ -21,6 +21,7 @@ inherit F_DBASE;
 inherit F_SAVE;
 
 void update_age();
+private void time_out();
 
 static object my_body;
 static int last_age_set;
@@ -46,11 +47,11 @@ logon()
     seteuid(getuid());
 
     if( load_object(LOGIN_D) ) {
-	call_out( "time_out", LOGIN_TIMEOUT );
+	call_out((: time_out :), LOGIN_TIMEOUT);
 	set_temp("login_time", time());
 	last_age_set = time();
 	seteuid(0);
-	if (query_ip_port() == 4001) {
+	if (query_ip_port() == 5001) {
 	    set_encoding("UTF-8");
 	    return;
 	}
@@ -80,7 +81,7 @@ time_out()
 	write("您花在連線進入手續的時間太久了﹐下次想好再來吧。\n");
 
     // If we go linkdead before we finish character creation, destruct
-    // the body as well. 
+    // the body as well.
     if( objectp(body = query_temp("temp_body"))
     &&	!userp(body) )
         destruct(body);
@@ -179,7 +180,7 @@ query(string prop, int raw)
 	break;
     }
 
-    /* 保護指標語意(pointer semantic)型別的資料 */    
+    /* 保護指標語意(pointer semantic)型別的資料 */
     if( mapp(data) || arrayp(data) ) USER_PROTECT();
 
     return data;

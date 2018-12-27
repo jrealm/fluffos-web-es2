@@ -15,6 +15,8 @@
 
 #include <function.h>
 
+private void input_line(string line, string text, function callback);
+
 int edit(function callback, string text)
 {
     write("結束離開用 '.'﹐取消輸入用 '~q'﹐使用內建列編輯器用 '~e'。\n");
@@ -25,10 +27,10 @@ int edit(function callback, string text)
     if( text )      // 增加 text 這個變數, for board's followup
     {
         write( text );
-        input_to( "input_line", text, callback );
+        input_to((: input_line :), text, callback);
         return 1;
     }
-    input_to("input_line", "", callback );
+    input_to((: input_line :), "", callback);
     return 1;
 }
 
@@ -46,5 +48,5 @@ private void input_line(string line, string text, function callback)
     } else if( line=="~e" ) {
     } else
         text += line + "\n";
-    input_to("input_line", text, callback);
+    input_to((: input_line :), text, callback);
 }

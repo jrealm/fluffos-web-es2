@@ -14,6 +14,8 @@
 
 #include <http.h>
 
+private void http_timeout();
+
 string request;
 string* header;
 
@@ -23,7 +25,7 @@ create()
     if( !clonep() ) return;
 
     seteuid(getuid());
-    call_out("http_timeout", HTTP_TIMEOUT *2);
+    call_out((: http_timeout :), HTTP_TIMEOUT *2);
 }
 
 private void

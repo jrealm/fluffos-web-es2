@@ -16,6 +16,14 @@
 
 inherit F_CLEAN_UP;
 
+private int get_msg_myself(string msg, mapping emote, string pattern);
+private int get_msg_others(string msg, mapping emote, string pattern);
+private int get_msg_myself_self(string msg, mapping emote, string pattern);
+private int get_msg_others_self(string msg, mapping emote, string pattern);
+private int get_msg_myself_target(string msg, mapping emote, string pattern);
+private int get_msg_target(string msg, mapping emote, string pattern);
+private int get_msg_others_target(string msg, mapping emote, string pattern);
+
 int in_use;
 
 int main(object me, string arg)
@@ -54,7 +62,7 @@ int main(object me, string arg)
     write("  $p  使用對象的人稱代名詞﹐如你、妳、他、她、牠、它。\n");
     write("────────────────────────────────────\n");
     write("不指定對象使用這個 emote 時﹐你自己看到的訊息﹕\n->");
-    input_to("get_msg_myself", emote, arg);
+    input_to((: get_msg_myself :), emote, arg);
     return 1;
 }
 
@@ -65,14 +73,14 @@ get_msg_myself(string msg, mapping emote, string pattern)
     if (msg==".") {
         if( !undefinedp(emote["myself"]) ) emote["myself"] += "\n";
         write("不指定對象使用這個 emote 時﹐其他人看到的訊息﹕\n->");
-        input_to("get_msg_others", emote, pattern);
+        input_to((: get_msg_others :), emote, pattern);
         return 1;
     }
     if( !undefinedp(emote["myself"]) )
         emote["myself"] += msg + "\n";
     else emote["myself"] = msg;
     write("->");
-    input_to("get_msg_myself", emote, pattern);
+    input_to((: get_msg_myself :), emote, pattern);
     return 1;
 }
 
@@ -82,14 +90,14 @@ get_msg_others(string msg, mapping emote, string pattern)
     if (msg==".") {
         if( !undefinedp(emote["others"]) ) emote["others"] += "\n";
         write("對自己使用這個 emote 時﹐自己看到的訊息﹕\n->");
-        input_to("get_msg_myself_self", emote, pattern);
+        input_to((: get_msg_myself_self :), emote, pattern);
         return 1;
     }
     if( !undefinedp(emote["others"]) )
         emote["others"] += msg + "\n";
     else emote["others"] = msg;
     write("->");
-    input_to("get_msg_others", emote, pattern);
+    input_to((: get_msg_others :), emote, pattern);
     return 1;
 }
 
@@ -99,14 +107,14 @@ get_msg_myself_self(string msg, mapping emote, string pattern)
     if (msg==".") {
         if( !undefinedp(emote["myself_self"]) ) emote["myself_self"] += "\n";
         write("對自己使用這個 emote 時﹐其他人看到的訊息﹕\n->");
-        input_to("get_msg_others_self", emote, pattern);
+        input_to((: get_msg_others_self :), emote, pattern);
         return 1;
     }
     if( !undefinedp(emote["myself_self"]) )
         emote["myself_self"] += msg + "\n";
     else emote["myself_self"] = msg;
     write("->");
-    input_to("get_msg_myself_self", emote, pattern);
+    input_to((: get_msg_myself_self :), emote, pattern);
     return 1;
 }
 
@@ -116,14 +124,14 @@ get_msg_others_self(string msg, mapping emote, string pattern)
     if (msg==".") {
         if( !undefinedp(emote["others_self"]) ) emote["others_self"] += "\n";
         write("對別人使用這個 emote 時﹐自己看到的訊息﹕\n->");
-        input_to("get_msg_myself_target", emote, pattern);
+        input_to((: get_msg_myself_target :), emote, pattern);
         return 1;
     }
     if( !undefinedp(emote["others_self"]) )
         emote["others_self"] += msg + "\n";
     else emote["others_self"] = msg;
     write("->");
-    input_to("get_msg_others_self", emote, pattern);
+    input_to((: get_msg_others_self :), emote, pattern);
     return 1;
 }
 
@@ -133,14 +141,14 @@ get_msg_myself_target(string msg, mapping emote, string pattern)
     if (msg==".") {
         if( !undefinedp(emote["myself_target"]) ) emote["myself_target"] += "\n";
         write("對別人使用這個 emote 時﹐使用對象看到的訊息﹕\n->");
-        input_to("get_msg_target", emote, pattern);
+        input_to((: get_msg_target :), emote, pattern);
         return 1;
     }
     if( !undefinedp(emote["myself_target"]) )
         emote["myself_target"] += msg + "\n";
     else emote["myself_target"] = msg;
     write("->");
-    input_to("get_msg_myself_target", emote, pattern);
+    input_to((: get_msg_myself_target :), emote, pattern);
     return 1;
 }
 
@@ -150,14 +158,14 @@ get_msg_target(string msg, mapping emote, string pattern)
     if (msg==".") {
         if( !undefinedp(emote["target"]) ) emote["target"] += "\n";
         write("對別人使用這個 emote 時﹐除你自己和使用對象外﹐其他人看到的訊息﹕\n->");
-        input_to("get_msg_others_target", emote, pattern);
+        input_to((: get_msg_others_target :), emote, pattern);
         return 1;
     }
     if( !undefinedp(emote["target"]) )
         emote["target"] += msg + "\n";
     else emote["target"] = msg;
     write("->");
-    input_to("get_msg_target", emote, pattern);
+    input_to((: get_msg_target :), emote, pattern);
     return 1;
 }
 
@@ -174,7 +182,7 @@ get_msg_others_target(string msg, mapping emote, string pattern)
         emote["others_target"] += msg + "\n";
     else emote["others_target"] = msg;
     write("->");
-    input_to("get_msg_others_target", emote, pattern);
+    input_to((: get_msg_others_target :), emote, pattern);
     return 1;
 }
 

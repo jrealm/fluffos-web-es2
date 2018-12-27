@@ -29,6 +29,7 @@ string *weather_msg = ({
 
 private mapping *read_table(string file);
 private void init_day_phase();
+private void update_day_phase();
 
 private void
 create()
@@ -61,7 +62,7 @@ init_day_phase()
     // any conversion before using this number as call_out dalay, if you 
     // changed the time scale, be sure to convert it.
 
-    call_out("update_day_phase",
+    call_out((: update_day_phase :),
         (int)day_phase[(current_day_phase+1) % sizeof(day_phase)]["length"] - t);
 }
 
@@ -70,7 +71,7 @@ update_day_phase()
 {
     object* rcpt;
 
-    remove_call_out("update_day_phase");
+    remove_call_out();
 
     current_day_phase = (++current_day_phase) % sizeof(day_phase);
 
@@ -83,7 +84,7 @@ update_day_phase()
 	call_other(this_object(), day_phase[current_day_phase]["event_fun"]);
 #endif
 
-    call_out("update_day_phase", day_phase[current_day_phase]["length"]);
+    call_out((: update_day_phase :), day_phase[current_day_phase]["length"]);
 }
 
 string outdoor_room_description()

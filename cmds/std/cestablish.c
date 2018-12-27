@@ -15,6 +15,11 @@
 #include <ansi.h>
 inherit F_CLEAN_UP;
 
+private void get_clan_name(string arg, object me);
+private void confirm_name(string yn, object me);
+private void get_clan_rank(string arg, object me);
+private void confirm_rank(string yn, object me);
+
 int main(object me, string arg)
 {
 	object who;
@@ -37,7 +42,7 @@ int main(object me, string arg)
 		write( read_file("/obj/CLAN") );
 		write("\n在幫名決定之前, 可隨時以指令:q脫離建幫手續。請\n");
 		write("創一具風格的全新幫派。請輸入幫派名: ");
-		input_to("get_clan_name", me);
+		input_to((: get_clan_name :), me);
 		return 1;
 	}
 
@@ -79,14 +84,14 @@ private void get_clan_name(string arg, object me)
         seteuid(getuid(me));
 	me->set("clan/clan_name", arg);
 	write("您確定要用這當您的幫派名嗎(y/n/q)﹖");
-	input_to("confirm_name", me);
+	input_to((: confirm_name :), me);
 }
 
 private void confirm_name(string yn, object me)
 {        
 	if( yn=="" ) {
 		write("您確定要用這當您的幫派名嗎(y/n)﹖");
-                input_to("confirm_name", me);
+                input_to((: confirm_name :), me);
                 return;
 	}
 	if( yn == "q" ) {
@@ -96,7 +101,7 @@ private void confirm_name(string yn, object me)
 
         if( yn[0]!='y' && yn[0]!='Y' ) {
                 write("那麼請重新輸入您想要的幫派名字: ");
-                input_to("get_clan_name", me);
+                input_to((: get_clan_name :), me);
                 return;
         }
 	seteuid(ROOT_UID);
@@ -109,14 +114,14 @@ private void confirm_name(string yn, object me)
 	ctime(time()), me->query("clan/clan_name"), me->name(),
 	me->query("id")) );
 	write("請輸入這個幫派領導人的稱號(如: 幫主, 門主, 掌門): ");
-	input_to("get_clan_rank", me);
+	input_to((: get_clan_rank :), me);
 }
 
 private void get_clan_rank(string arg, object me)
 {
 	if( strlen(arg) > 4 ) {
 		write("稱號過長, 請重新輸入: ");
-		input_to("get_clan_rank", me);
+		input_to((: get_clan_rank :), me);
 	}
 	seteuid(getuid(me));
 	me->set("clan/rank", arg);
@@ -124,7 +129,7 @@ private void get_clan_rank(string arg, object me)
 	me->set("clan/clan_level", 3);
 	me->set("clan/elder", 0);
 	write("您確定要用這當您的幫派稱號嗎(y/n)﹖");
-	input_to("confirm_rank", me);
+	input_to((: confirm_rank :), me);
 }
 
 private void confirm_rank(string yn, object me)
@@ -133,13 +138,13 @@ private void confirm_rank(string yn, object me)
 
 	if( yn=="" ) {
 		write("您確定要用這當您的幫派稱號嗎(y/n)﹖");
-                input_to("confirm_rank", me);
+                input_to((: confirm_rank :), me);
                 return;
         }
 
         if( yn[0]!='y' && yn[0]!='Y' ) {
                 write("那麼請重新輸入您想要的幫派稱號: ");
-                input_to("get_clan_rank", me);
+                input_to((: get_clan_rank :), me);
                 return;
         }
 #ifdef SAVE_USER

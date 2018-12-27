@@ -13,7 +13,7 @@
 */
 
 #include <ansi.h>
-#include <net/dns.h>
+//#include <net/dns.h>
 
 #define MIN_TELL_INTERVAL	3
 #define MAX_TELL_MESSAGE	1024
@@ -39,7 +39,7 @@ int main(object me, string arg)
 	return notify_fail("你的訊息太長了，請長話短說。\n");
 
     if( sscanf(target, "%s@%s", target, mud)==2 ) {
-	GTELL->send_gtell(mud, target, me, msg);
+	//GTELL->send_gtell(mud, target, me, msg);
 	write("網路訊息已送出，可能要稍候才能得到回應。\n");
 	return 1;
     }
@@ -54,7 +54,7 @@ int main(object me, string arg)
         tell_object(me, "這個人現在不接收任何人的談話。\n");
         return 1;
     }
-    
+
     if(!interactive(obj))
 	return notify_fail("這個人現在沒辦法聽到你的訊息。\n");
 
@@ -71,7 +71,7 @@ int main(object me, string arg)
     }
 
     write("你告訴" + obj->name(1) + "：" + HIG + msg + "\n" NOR);
-        
+
     if( (idle_time = query_idle(obj)/60) > 2
     || in_input(obj)
     || in_edit(obj) ) {

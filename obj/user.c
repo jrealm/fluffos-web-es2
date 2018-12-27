@@ -31,7 +31,7 @@ private void user_dump(int type);
 // variables
 
 static object my_link;
-static int last_age_set;
+static int last_age_set, handle;
 
 // implementations
 
@@ -129,9 +129,9 @@ heart_beat()
 
     if( objectp(my_link) ) my_link->update_age();
 
-    if( interactive(this_object())
-    &&	query_idle(this_object()) >= IDLE_TIMEOUT )
-	user_dump(DUMP_IDLE);
+//    if( interactive(this_object())
+//    &&	query_idle(this_object()) >= IDLE_TIMEOUT )
+//	user_dump(DUMP_IDLE);
 }
 
 void
@@ -164,7 +164,7 @@ user_dump(int type)
     case DUMP_IDLE:
 	// wiz don't get kicked out (Elon 10-17-95)
 	if (wizardp(this_object())) return;
-	tell_object( this_object(), "對不起﹐您已經發呆超過 " 
+	tell_object( this_object(), "對不起﹐您已經發呆超過 "
 	    + IDLE_TIMEOUT/60 + " 分鐘了﹐請下次再來。\n");
 	tell_room( environment(), "一陣風吹來﹐將發呆中的" + query("name")
 	    + "化為一堆飛灰﹐消失了。\n", ({this_object()}));
@@ -198,12 +198,12 @@ net_dead()
     if( is_busy() ) interrupt(this_object(), INTR_LINKDEAD);
 
     if( userp(this_object()) ) {
-	call_out("user_dump", NET_DEAD_TIMEOUT, DUMP_NET_DEAD);
+	handle = call_out((: user_dump :), NET_DEAD_TIMEOUT, DUMP_NET_DEAD);
 	// tell room what happen to this player -dragoon
 	tell_room(environment(), "時空一陣波動, " + query("name") +
 	    "瞬間由這個世界消失...\n");
 	LOGIN_D->net_dead(this_object());
-    } else 
+    } else
 	command("quit");
 }
 
@@ -217,7 +217,7 @@ reconnect()
 	error("Permission denied.\n");
 
     set_heart_beat(1);
-    remove_call_out("user_dump");
+    remove_call_out(handle);
     tell_object(this_object(), "重新連線完畢。\n");
     if( stringp(last_loc = query_temp("last_location")) )
 	move(last_loc);
@@ -271,7 +271,7 @@ win_fight(object opponent)
 /***********************************************************************
                             USER DATA PROTECTIONS
  ***********************************************************************/
- 
+
 nomask mixed
 set(string prop, mixed data)
 {
@@ -318,7 +318,7 @@ advance_skill(string skill, int amount)
 nomask void
 set_learn(string skill, int lrn)
 {
-    USER_PROTECT();    
+    USER_PROTECT();
     ::set_learn(skill, lrn);
 }
 

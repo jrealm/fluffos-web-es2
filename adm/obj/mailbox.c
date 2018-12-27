@@ -24,6 +24,9 @@ private mapping *mails;
 
 void get_mail_text(mapping mail, string str);
 
+private void get_mail_title(string str, mapping mail);
+private void confirm_copy(string yn, mapping mail);
+
 private void
 create()
 {
@@ -132,7 +135,7 @@ do_mail(string arg)
 	"text": ""
     ]);
     write("信件標題﹕");
-    input_to("get_mail_title", mail);
+    input_to((: get_mail_title :), mail);
     return 1;
 }
 
@@ -148,7 +151,7 @@ void get_mail_text(mapping mail, string str)
 {
     mail["text"] = str;
     write("您自己要留一份備份嗎(y/n)﹖[n]");
-    input_to("confirm_copy", mail);
+    input_to((: confirm_copy :), mail);
 }
 
 private void

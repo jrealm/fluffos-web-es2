@@ -27,6 +27,24 @@ static mixed default_ob;
 
 mixed query_default_object() { return default_ob; }
 
+mixed get_match(mapping m, string p) {
+    mixed cont, undef;
+    int r;
+
+    while ((r = strsrch(p, '/')) > 0) {
+        cont = m[p[0..r - 1]];
+
+        if (!mapp(cont)) {
+            return undef;
+        }
+
+        m = cont;
+        p = p[r + 1..];
+    }
+
+    return m[p];
+}
+
 void
 set_default_object(mixed ob)
 {
@@ -47,7 +65,7 @@ set(string prop, mixed data)
 
     while( (r = strsrch(prop, '/', -1)) > 0 )
     {
-	cont = match_path( dbase, prop[0..r-1] );
+	cont = get_match( dbase, prop[0..r-1] );
 	if( mapp(cont) ) return cont[prop[r+1..]] = data;
 	data = ([ prop[r+1..]: data ]);
 	prop = prop[0..r-1];
@@ -64,7 +82,7 @@ query(string prop, int raw)
 
     if( !mapp(dbase) ) return 0;
 
-    data = match_path(dbase, prop);
+    data = get_match(dbase, prop);
 
     if( raw ) return data;
 
@@ -91,7 +109,7 @@ delete(string prop)
     if( !mapp(dbase) ) return;
 
     if( (r = strsrch(prop, '/', -1)) > 0 ) {
-	cont = match_path(dbase, prop[0..r-1]);
+	cont = get_match(dbase, prop[0..r-1]);
 	if( mapp(cont) )
 	    map_delete(cont, prop[r+1..]);
 	return 0;
@@ -120,7 +138,7 @@ query_entire_dbase()
 
     foreach(ob in previous_object(-1)) {
 	if( (geteuid(ob) == ROOT_UID)
-	||  (geteuid(ob) == getuid(this_object())) 
+	||  (geteuid(ob) == getuid(this_object()))
 	||  master()->valid_write( base_name(this_object()), ob, "write_file" ) )
 	    continue;
 	error("Permission denied.\n");
@@ -138,7 +156,7 @@ set_temp(string prop, mixed data)
 
     while( (r = strsrch(prop, '/', -1)) > 0 )
     {
-	cont = match_path( tmp_dbase, prop[0..r-1] );
+	cont = get_match( tmp_dbase, prop[0..r-1] );
 	if( mapp(cont) ) return cont[prop[r+1..]] = data;
 	data = ([ prop[r+1..]: data ]);
 	prop = prop[0..r-1];
@@ -153,7 +171,7 @@ query_temp(string prop, int raw)
     mixed data;
 
     if( !mapp(tmp_dbase) ) return 0;
-    data = match_path(tmp_dbase, prop);
+    data = get_match(tmp_dbase, prop);
     return raw ? data : evaluate(data, this_object());
 }
 
@@ -166,7 +184,7 @@ delete_temp(string prop)
     if( !mapp(tmp_dbase) ) return;
 
     if( (r = strsrch(prop, '/', -1)) > 0 ) {
-	cont = match_path(tmp_dbase, prop[0..r-1]);
+	cont = get_match(tmp_dbase, prop[0..r-1]);
 	if( mapp(cont) )
 	    map_delete(cont, prop[r+1..]);
 	return 0;

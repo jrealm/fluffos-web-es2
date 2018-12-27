@@ -13,7 +13,7 @@
 */
 
 #include <ansi.h>
-#include <net/dns.h>
+//#include <net/dns.h>
 
 #define MIN_REPLY_INTERVAL       3
 #define MAX_REPLY_MESSAGE        1024
@@ -45,7 +45,7 @@ int main(object me, string arg)
         return notify_fail("你的訊息太長了，請長話短說。\n");
 
     if( sscanf(target, "%s@%s", target, mud)==2 ) {
-	GTELL->send_gtell(lower_case(mud), lower_case(target), me, arg);
+	//GTELL->send_gtell(lower_case(mud), lower_case(target), me, arg);
 	write("網路訊息已送出﹐可能要稍候才能得到回應。\n");
 	return 1;
     }

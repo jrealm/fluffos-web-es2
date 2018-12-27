@@ -17,7 +17,7 @@ void set_amount(int v)
     if( v < 0 ) error("combine:set_amount less than 1.\n");
     amount = v;
 
-    if( v==0 )	call_out("destruct_me", 0);
+    if( v==0 )	call_out((: destruct_me :), 0);
     else	this_object()->set_weight((int)(v * (float)query("base_weight")));
 }
 
